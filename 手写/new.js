@@ -1,6 +1,6 @@
 function Foo() {} // 已有的构造函数
 
-function customNew(constructor, ...args): T {
+function customNew(constructor, ...args) {
     // 1. 创建一个空对象，继承 constructor 的原型
     const obj = Object.create(constructor.prototype)
     // 2. 将 obj 作为 this ，执行 constructor ，传入参数
@@ -27,3 +27,17 @@ function customNew() {
 }
 
 const person2 = create(Foo, '杰拉德', 40)
+
+function new1(con, ...args) {
+    const obj = Object.create(con.prototype)
+    con.apply(obj, args)
+    return obj
+}
+
+function new2() {
+    let obj = {}
+    const con = [].shift.call(arguments)
+    obj.__proto = con.prototype
+    const res = con.apply(obj, arguments)
+    return obj instanceof Object ? res : {}
+}

@@ -11,15 +11,14 @@
     </div> 
 */
 
-
 const vnode = {
     tag: 'div', // <div>
     data: {
         id: 'div1',
         style: {
-            'border': '1px solid #ccc',
-            'padding': '10px'
-        }
+            border: '1px solid #ccc',
+            padding: '10px',
+        },
     },
     children: [
         {
@@ -31,28 +30,28 @@ const vnode = {
                     tag: 'a', // <a>
                     data: {
                         href: 'xxx.html',
-                        target: '_blank'
+                        target: '_blank',
                     },
-                    children: ['链接']
-                }
-            ]
+                    children: ['链接'],
+                },
+            ],
         },
         {
             tag: 'img', // <img>
             data: {
                 className: 'image', // 注意，这里要用 className
                 src: 'xxx.png',
-                alt: '图片'
-            }
+                alt: '图片',
+            },
         },
         {
             tag: 'button', // <button>
             data: {
                 events: {
-                    click: clickHandler
-                }
-            }
-            children: ['点击']
-        }
-    ]
+                    click: clickHandler,
+                },
+            },
+            children: ['点击'],
+        },
+    ],
 }

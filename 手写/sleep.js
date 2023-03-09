@@ -27,3 +27,11 @@ async function output() {
     return out
 }
 output()
+
+function sleep1(delay) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve()
+        }, delay)
+    })
+}

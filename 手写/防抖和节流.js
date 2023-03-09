@@ -97,3 +97,52 @@ function throttle(fn, delay, isImmediate) {
         }
     }
 }
+
+function debounce(fn, delay, isImediate) {
+    let timer = null
+    let flag = true
+    return function () {
+        if (timer) {
+            clearTimeout(timer)
+        }
+        if (isImediate) {
+            if (flag) {
+                fn.apply(this, arguments)
+                flag = false
+            }
+            timer = setTimeout(() => {
+                flag = true
+            }, delay)
+        } else {
+            timer = setTimeout(() => {
+                fn.apply(this, arguments)
+                timer = null
+            }, delay)
+        }
+    }
+}
+
+function throttle(fn, delay, isImmediate) {
+    let timer = null
+    let flag = true
+    return function () {
+        if (timer) {
+            return
+        }
+        if (isImmediate) {
+            if (flag) {
+                fn.apply(fn, arrguments)
+                flag = false
+            }
+            timer = setTimeout(() => {
+                this.flag = true
+                timer = null
+            }, delay)
+        } else {
+            timer = setTimeout(() => {
+                fn.apply(fn, arrguments)
+                timer = null
+            }, delay)
+        }
+    }
+}

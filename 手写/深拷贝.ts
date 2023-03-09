@@ -1,10 +1,10 @@
 //  * 深拷贝 - 只考虑了简单的数组、对象
 //  * @param obj obj
 //  */
-function cloneDeep2(obj: any) {
+function cloneDeep2(obj) {
     if (typeof obj !== 'object' || obj == null) return obj
 
-    let result: any
+    let result
     if (obj instanceof Array) {
         result = []
     } else {
@@ -32,14 +32,14 @@ function cloneDeep2(obj: any) {
  * @param obj obj
  * @param map weakmap 为了避免循环引用
  */
-export function cloneDeep(obj: any, map = new WeakMap()): any {
+function cloneDeep(obj, map = new WeakMap()) {
     if (typeof obj !== 'object' || obj == null) return obj
 
     // 避免循环引用
     const objFromMap = map.get(obj)
     if (objFromMap) return objFromMap
 
-    let target: any = {}
+    let target = {}
     map.set(obj, target)
 
     // Map
@@ -76,14 +76,20 @@ export function cloneDeep(obj: any, map = new WeakMap()): any {
     return target
 }
 
-// // 功能测试
-// const a: any = {
-//     set: new Set([10, 20, 30]),
-//     map: new Map([['x', 10], ['y', 20]]),
-//     info: {
-//         city: '北京'
-//     },
-//     fn: () => { console.info(100) }
-// }
+// 功能测试
+const a = {
+    set: new Set([10, 20, 30]),
+    map: new Map([
+        ['x', 10],
+        ['y', 20],
+    ]),
+    sym: Symbol(1),
+    info: {
+        city: '北京',
+    },
+    fn: () => {
+        console.info(100)
+    },
+}
 // a.self = a
-// console.log( cloneDeep(a) )
+console.log(cloneDeep(a))

@@ -1,14 +1,21 @@
-jsonp('api/action', 'callbackName', function (res) {
-    console.log(res)
-})
-
-function jsonp(url, callback, success) {
-    let script = document.createElement('script')
-    script.src = url
-    script.async = true
-    script.type = 'text/javascript'
-    window[callback] = function (data) {
-        success && success(data)
+function Jsonp({ url, params, callback }) {
+    function _getSrc() {
+        let srcStr = ''
+        for (let key in params) {
+            if (Object.prototype.hasOwnProperty.call(params, key)) {
+                srcStr += `${key}=${params[key]}&`
+            }
+        }
+        srcStr += `${url}?${srcStr}callback=${callback}`
+        return srcStr
     }
-    document.appendChild(script)
+    return new Promise((resolve, reject) => {
+        const scriptElement = document.createElement('script')
+        scriptElement.src = _getSrc()
+        document.appendChild(scriptElement)
+        window[callback] = function (data) {
+            resolve(data)
+            document.removeChild(scriptElement)
+        }
+    })
 }

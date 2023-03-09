@@ -73,3 +73,43 @@ Promise.race = function (iterator) {
         }
     })
 }
+
+Promise.any = function (list) {
+    return new Promise((resolve, reject) => {
+        if (list.length === 0 || !list) {
+            return resolve([])
+        }
+        let count = 0
+        let length = list.length
+        let res = []
+        for (let i = 0; i < length; i++) {
+            Promise.resolve(list[i]).then(
+                (data) => {
+                    resolve(data)
+                },
+                (e) => {
+                    count++
+                    res[i] = e
+                    if (count === length) {
+                        reject(new AggregateError(res))
+                    }
+                }
+            )
+        }
+    })
+}
+
+Promise.resolve = function (value) {
+    if (value instanceof Promise) {
+        return value
+    }
+    return new Promise((resolve) => {
+        resolve(value)
+    })
+}
+
+Promise.reject = function (reason) {
+    return new Promise((resolve, reject) => {
+        reject(reason)
+    })
+}

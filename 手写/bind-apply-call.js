@@ -1,10 +1,18 @@
-function myBind(context, ...bindArgs) {
+Function.prototype.bind = function (context, ...args) {
     // context 是 bind 传入的 this
-    // bindArgs 是 bind 传入的各个参数
-    let self = this // 当前的函数本身
-    return function () {
-        let params = [...bindArgs, ...arguments]
-        return self.apply(context, params)
+    // args 是 bind 传入的各个参数
+    if (typeof this !== 'function') {
+        throw new Error('Type Error')
+    }
+    // 保存this的值
+    var self = this // 当前的函数本身
+
+    return function F() {
+        // 考虑new的情况
+        if (this instanceof F) {
+            return new self(...args, ...arguments)
+        }
+        return self.apply(context, [...args, ...arguments])
     }
 }
 
@@ -51,3 +59,26 @@ Function.prototype.myApply = function (context) {
 
 const applyResult = Array.prototype.concat.myApply([1, 2], [3, 4])
 console.log(applyResult)
+
+function mycall2(context) {
+    if (typeof this !== 'function') {
+        throw new TypeError('this is not a function')
+    }
+    context = context || window
+    context.fn = this
+    const args = [...arguments].slice(1)
+    const res = context.fn(...args)
+    delete context.fn
+    return res
+}
+
+function myApply2(context) {
+    if (typeof this !== 'function') {
+        throw new TypeError('1')
+    }
+    context = context || window
+    context.fn = this
+    let res = arguments[1] ? context.fn(...arguments[1]) : context.fn()
+    delete context.fn
+    return res
+}
